@@ -1,7 +1,7 @@
 import serial
 
 # Replace 'COM5' with your ESP32's serial port
-ESP32_PORT = "COM5"
+ESP32_PORT = "COM5" # need to figure this out while connecting using BT
 BAUD_RATE = 115200
 
 try:
@@ -13,7 +13,7 @@ try:
         # Read data from the ESP32
         if esp32_serial.in_waiting > 0:
             data = esp32_serial.readline().decode('utf-8').strip()
-            print(f"Received: {data}")
+            print(f"Received: {data}") # basically just prints out the data received for now.
 
 except serial.SerialException as e:
     print(f"Error: {e}")
