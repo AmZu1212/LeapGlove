@@ -8,7 +8,7 @@
 
 //This is the configuration file, main structure in _main.ino
 //CONFIGURATION SETTINGS:
-#define COMMUNICATION COMM_SERIAL //Which communication protocol to use
+#define COMMUNICATION COMM_BTSERIAL //Which communication protocol to use
 //serial over USB
   #define SERIAL_BAUD_RATE 115200
   
@@ -16,7 +16,7 @@
   #define BTSERIAL_DEVICE_NAME "lucidgloves-left"
 
 //ANALOG INPUT CONFIG
-#define FLIP_POTS  false  //Flip values from potentiometers (for fingers!) if they are backwards
+#define FLIP_POTS  true  //Flip values from potentiometers (for fingers!) if they are backwards
 
 //Gesture enables, make false to use button override
 #define TRIGGER_GESTURE true

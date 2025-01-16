@@ -1,7 +1,7 @@
 import serial
 
 # Replace 'COM5' with your ESP32's serial port
-ESP32_PORT = "COM5" # need to figure this out while connecting using BT
+ESP32_PORT = "COM7" # need to figure this out while connecting using BT
 BAUD_RATE = 115200
 
 try:
