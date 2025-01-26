@@ -13,7 +13,7 @@
   #define SERIAL_BAUD_RATE 115200
   
 //serial over Bluetooth
-  #define BTSERIAL_DEVICE_NAME "lucidgloves-left"
+  #define BTSERIAL_DEVICE_NAME "LeapGlove"
 
 //ANALOG INPUT CONFIG
 #define FLIP_POTS  true  //Flip values from potentiometers (for fingers!) if they are backwards
