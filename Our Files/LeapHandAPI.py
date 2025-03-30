@@ -43,7 +43,7 @@ class LeapNode:
                 self.dxl_client = DynamixelClient(motors, '/dev/ttyUSB1', 4000000)
                 self.dxl_client.connect()
             except Exception:
-                self.dxl_client = DynamixelClient(motors, 'COM13', 4000000)
+                self.dxl_client = DynamixelClient(motors, 'COM5', 4000000)
                 self.dxl_client.connect()
         #Enables position-current control mode and the default parameters, it commands a position and then caps the current so the motors don't overload
         self.dxl_client.sync_write(motors, np.ones(len(motors))*5, 11, 1)

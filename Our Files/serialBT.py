@@ -1,88 +1,74 @@
 import serial
 import re
 import time
-import keyboard  # Install with `pip install keyboard`
-
-from LeapHandAPI import LeapNode  # Import LEAP Hand control class
-from leap_hand_utils.dynamixel_client import *
-import leap_hand_utils.leap_hand_utils as lhu
+import keyboard
 import numpy as np
 
-# Replace 'COM8' with your ESP32's serial port
 ESP32_PORT = "COM8"
 BAUD_RATE = 115200
+SEND_INTERVAL = 0.012  # ~83Hz
 
-# Delay between updates, in seconds (~83 Hz, safely under 90 Hz)
-UPDATE_DELAY = 0.012  
+ENABLE_LEAPHAND = True
 
-ENABLE_HAPTIC_FEEDBACK = False
-ENABLE_LEAPHAND = False
+if ENABLE_LEAPHAND:
+    from LeapHandAPI import LeapNode as BaseLeapNode
+    from leap_hand_utils.dynamixel_client import *
+    import leap_hand_utils.leap_hand_utils as lhu
 
-# Converts finger 0-100% to leaphand joint angles
-def glove_to_leap(glove_data):
-    min_angle = 90   # Fully closed
-    max_angle = 180  # Fully open
+    class LeapNode(BaseLeapNode):
+        def __init__(self):
+            super().__init__()  # COM5 fallback
 
-    # Default all joints to fully open (180°)
-    leap_pose = np.full(16, 180)
+# Allegro-style mapping: 0.0 (open) → ~4.0 (closed)
+def glove_to_allegro(glove_data):
+    pose = np.zeros(16)
 
-    # Map glove values (0-100%) → LEAP Hand joints
     finger_map = {
-        "Index (P)": [1, 2, 3],   # MCP Forward, PIP, DIP
-        "Middle (C)": [5, 6, 7],  # MCP Forward, PIP, DIP
-        "Ring (D)": [9, 10, 11],  # MCP Forward, PIP, DIP
-        "Thumb (A)": [13, 14, 15] # MCP Forward, PIP, DIP
+        "Index (P)": [1, 2, 3],
+        "Middle (C)": [5, 6, 7],
+        "Ring (D)": [9, 10, 11],
+        "Thumb (A)": [13, 14, 15]
     }
 
     for finger, joints in finger_map.items():
-        bend_value = glove_data[finger] / 100  # Normalize 0-1
+        bend = np.clip(glove_data[finger] / 100.0, 0.0, 1.0)
 
-        # Distribute bend values across joints
-        leap_pose[joints[0]] = max_angle - (bend_value * (max_angle - min_angle) * 0.40)  # MCP (40%)
-        leap_pose[joints[1]] = max_angle - (bend_value * (max_angle - min_angle) * 0.35)  # PIP (35%)
-        leap_pose[joints[2]] = max_angle - (bend_value * (max_angle - min_angle) * 0.25)  # DIP (25%)
+        pose[joints[0]] = bend * 1.6  # MCP
+        pose[joints[1]] = bend * 1.4  # PIP
+        pose[joints[2]] = bend * 1.0  # DIP
 
-    return leap_pose
+    return pose
 
-
-# Global variables for calibration
+# Calibration globals
 calibration_ranges = {
-    "Thumb (A)": [float('inf'), float('-inf')],  # [min, max]
+    "Thumb (A)": [float('inf'), float('-inf')],
     "Index (P)": [float('inf'), float('-inf')],
     "Middle (C)": [float('inf'), float('-inf')],
     "Ring (D)": [float('inf'), float('-inf')],
     "Pinky (E)": [float('inf'), float('-inf')],
 }
-calibrated = False  # Flag to check if calibration is done
+calibrated = False
 
 def calibrate(serial_conn, duration=5):
-    
-    # Calibrates the system by observing min and max values for each finger over `duration` seconds.
-    
     global calibration_ranges, calibrated
-
-    print("\nStarting calibration... Move fingers through full range.")
+    print("\n🛠️ Starting calibration... Move fingers through full range.")
     start_time = time.time()
-
     while time.time() - start_time < duration:
         if serial_conn.in_waiting > 0:
             raw_data = serial_conn.readline().decode('utf-8').strip()
             data = parse_raw_data(raw_data)
             if data:
-                for key in calibration_ranges.keys():
+                for key in calibration_ranges:
                     value = data[key]
-                    calibration_ranges[key][0] = min(calibration_ranges[key][0], value)  # Update min
-                    calibration_ranges[key][1] = max(calibration_ranges[key][1], value)  # Update max
-
+                    if value < 10000:  # sanity
+                        calibration_ranges[key][0] = min(calibration_ranges[key][0], value)
+                        calibration_ranges[key][1] = max(calibration_ranges[key][1], value)
     calibrated = True
-    print("\nCalibration complete! Ranges:")
+    print("\n✅ Calibration complete:")
     for key, (min_val, max_val) in calibration_ranges.items():
-        print(f"  {key}: Min={min_val}, Max={max_val}")
+        print(f"  {key}: Min={min_val}, Max={max_val}, Range={max_val - min_val:.1f}")
 
 def parse_raw_data(raw_data):
-    
-    #Parses the raw data string and returns a dictionary with values for each finger.
-    
     pattern = r"A(\d+)B(\d+)C(\d+)D(\d+)E(\d+)F(\d+)G(\d+)P(\d+)(.*)"
     match = re.match(pattern, raw_data)
     if match:
@@ -96,63 +82,58 @@ def parse_raw_data(raw_data):
     return None
 
 def parse_and_print_data(raw_data):
-    
-    #Parses and prints percentage data based on calibrated ranges.
-    
     global calibration_ranges, calibrated
-
     data = parse_raw_data(raw_data)
     if data:
         if calibrated:
-            # Calculate percentages
             output = {}
             for key, value in data.items():
                 min_val, max_val = calibration_ranges[key]
-                if max_val > min_val:  # Avoid division by zero
+                if max_val - min_val >= 5:
                     percentage = ((value - min_val) / (max_val - min_val)) * 100
-                    output[key] = max(0, min(100, percentage))  # Clamp between 0-100%
+                    output[key] = max(0, min(100, percentage))
                 else:
-                    output[key] = 0  # Default to 0% if invalid range
-
-            # Print percentages
-            percentages = "  ".join([f"{key}: {output[key]:.1f}%" for key in output])
-            print(f"\r{percentages}      ", end='', flush=True)
+                    output[key] = 0
+                print(f"{key}: {output[key]:.1f}%", end="  ")
+            print(end="\r", flush=True)
+            return output
         else:
-            # Print raw data with padding to overwrite leftovers
-            print(f"\rCalibration not done. Raw data: {raw_data}          ", end='', flush=True)
+            print(f"\rCalibration not done. Raw data: {raw_data}       ", end='', flush=True)
+    return None
 
 try:
-    # Open serial connection
     esp32_serial = serial.Serial(ESP32_PORT, BAUD_RATE, timeout=1)
-    print(f"Connected to {ESP32_PORT}")
+    print(f"✅ Connected to {ESP32_PORT}")
 
-    # Initialize the robotic hand
-    leap_node = LeapNode()  
-    print(f"Initialized LeapHand")
+    leap_node = None
+    if ENABLE_LEAPHAND:
+        leap_node = LeapNode()
+        print("🤖 LEAP Hand initialized")
+
+    last_send_time = time.time()
+    latest_glove_data = None
 
     while True:
-        # Check for Shift+C to trigger calibration
         if keyboard.is_pressed('shift+c'):
             calibrate(esp32_serial)
-            time.sleep(0.5)  # Debounce to avoid multiple triggers
+            time.sleep(0.5)
 
-        # Read data from the ESP32 and print percentages
         if esp32_serial.in_waiting > 0:
             raw_data = esp32_serial.readline().decode('utf-8').strip()
-            glove_data = parse_and_print_data(raw_data)  # Convert raw sensor data to percentages (0-100%)
+            latest_glove_data = parse_and_print_data(raw_data)
 
-            if glove_data and ENABLE_LEAPHAND:  # Only process if both conditions are True
-                pose = glove_to_leap(glove_data)  # Convert glove values to LEAP Hand angles
-                leap_node.set_leap(pose)  # Send movement command
-
-            # figure out a update delay thingy ******* amzu
-            #time.sleep(UPDATE_DELAY)  # Maintain ~83 Hz update rate
+        now = time.time()
+        if ENABLE_LEAPHAND and calibrated and latest_glove_data and (now - last_send_time) >= SEND_INTERVAL:
+            pose = glove_to_allegro(latest_glove_data)
+            #print(f"\n🎯 Allegro pose: {np.round(pose, 2)}")
+            leap_node.set_allegro(pose)
+            last_send_time = now
 
 except serial.SerialException as e:
-    print(f"Error: {e}")
+    print(f"Serial Error: {e}")
 
 except KeyboardInterrupt:
-    print("\nExiting...")
+    print("\n🛑 Exiting...")
 
 finally:
     if 'esp32_serial' in locals() and esp32_serial.is_open:
