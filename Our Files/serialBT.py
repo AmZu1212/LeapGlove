@@ -8,7 +8,9 @@ ESP32_PORT = "COM8"
 BAUD_RATE = 115200
 SEND_INTERVAL = 0.012  # ~83Hz
 
-ENABLE_LEAPHAND = True
+ENABLE_LEAPHAND = False
+
+SERVO_TESTING = False
 
 if ENABLE_LEAPHAND:
     from LeapHandAPI import LeapNode as BaseLeapNode
@@ -32,10 +34,15 @@ def glove_to_allegro(glove_data):
 
     for finger, joints in finger_map.items():
         bend = np.clip(glove_data[finger] / 100.0, 0.0, 1.0)
+        # Original
+        # pose[joints[0]] = bend * 1.6  # MCP
+        # pose[joints[1]] = bend * 1.4  # PIP
+        # pose[joints[2]] = bend * 1.0  # DIP
 
-        pose[joints[0]] = bend * 1.6  # MCP
+        # Original 2 (tighter grip)
+        pose[joints[0]] = bend * 1.8  # MCP
         pose[joints[1]] = bend * 1.4  # PIP
-        pose[joints[2]] = bend * 1.0  # DIP
+        pose[joints[2]] = bend * 1.4  # DIP
 
     return pose
 

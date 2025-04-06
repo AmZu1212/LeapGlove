@@ -68,13 +68,15 @@ void loop() {
     comm->output(encode(fingerPos, getJoyX(), getJoyY(), joyButton, triggerButton, aButton, bButton, grabButton, pinchButton, calibButton, menuButton));
 
     #if USING_FORCE_FEEDBACK
-      char received[100];
-      if (comm->readData(received)){
-        int hapticLimits[5];
-        //This check is a temporary hack to fix an issue with haptics on v0.5 of the driver, will make it more snobby code later
-        if(String(received).length() >= 10) {
-           decodeData(received, hapticLimits);
-           writeServoHaptics(hapticLimits); 
+      char received[30];
+      if (comm->available()){
+        if (comm->readData(received)){
+          int hapticLimits[5];
+          //This check is a temporary hack to fix an issue with haptics on v0.5 of the driver, will make it more snobby code later
+          if(String(received).length() >= 10) {
+            decodeData(received, hapticLimits);
+            writeServoHaptics(hapticLimits); 
+          }
         }
       }
     #endif

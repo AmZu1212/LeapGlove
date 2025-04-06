@@ -33,5 +33,9 @@ class BTSerialCommunication : public ICommunication {
       strcpy(input, message.c_str());
       return input != NULL && strlen(input) > 0;
     }
+
+    bool available(){
+      return m_SerialBT.available() > 0;
+    }
 };
 #endif

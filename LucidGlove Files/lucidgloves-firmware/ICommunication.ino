@@ -10,4 +10,5 @@ class ICommunication {
     virtual void output(char* data) = 0;
 
     virtual bool readData(char* input) = 0;
+    virtual bool available() = 0;
 };
