@@ -1,20 +1,54 @@
 import serial
 import time
 
-BT_SERIAL_PORT = "COM8"   # Replace with your port
+BT_SERIAL_PORT = "COM8"   # Replace with your actual port
 BAUD_RATE = 115200
-SEND_INTERVAL = 0.2       # Send every 200ms to keep it active
+SEND_INTERVAL = 2       # 500ms between each action
+
+
+"""
+currently the mapping is:
+A = thumb
+B = Ring finger
+C = Pinky finger
+D = Middle finger
+E = Index finger
+
+
+The mapping is not correct, not sure why yet.
+"""
+
+
+
+
 
 try:
     bt_serial = serial.Serial(BT_SERIAL_PORT, BAUD_RATE, timeout=1)
-    print(f"✅ Connected to {BT_SERIAL_PORT} for BTSerial")
+    print(f"✅ Connected to {BT_SERIAL_PORT}")
 
-    haptic_command = "A1023B0C0D0E0\n"
+    fingers = ['A', 'B', 'C', 'D', 'E']  # Thumb → Pinky
+    brake_strength = 600                # 60% brake
+    rest = 'A0B0C0D0E0'                 # All fingers at rest
 
     while True:
-        bt_serial.write(haptic_command.encode())
-        print(f"Sent: {haptic_command.strip()}")
-        time.sleep(SEND_INTERVAL)
+        for finger in fingers:
+            # Step 1: Set current finger to active value
+            parts = []
+            for f in fingers:
+                if f == finger:
+                    parts.append(f + str(brake_strength))
+                else:
+                    parts.append(f + '0')
+            command = ''.join(parts) + '\n'
+            bt_serial.write(command.encode())
+            print(f"Sent: {command.strip()}")
+            time.sleep(SEND_INTERVAL)
+
+            # Step 2: Return to rest
+            command = rest + '\n'
+            bt_serial.write(command.encode())
+            print(f"Sent: {command.strip()}")
+            time.sleep(SEND_INTERVAL)
 
 except serial.SerialException as e:
     print(f"Serial error: {e}")

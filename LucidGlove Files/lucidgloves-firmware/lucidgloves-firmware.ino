@@ -69,11 +69,14 @@
   #define PIN_PNCH_BTN  23 //unused if gesture set
   #define PIN_CALIB     12 //button for recalibration (You can set this to GPIO0 to use the BOOT button, but only when using Bluetooth.)
   #define DEBUG_LED 2
-  #define PIN_PINKY_MOTOR     5  //used for force feedback
-  #define PIN_RING_MOTOR      18 //^
+
+  // motor definitions
+  #define PIN_INDEX_MOTOR     21 // used for force feedback
   #define PIN_MIDDLE_MOTOR    19 //^
-  #define PIN_INDEX_MOTOR     21 //^
+  #define PIN_RING_MOTOR      18 //^
+  #define PIN_PINKY_MOTOR     5  //^
   #define PIN_THUMB_MOTOR     17 //^
+
   #define PIN_MENU_BTN        27
   
 //PINS CONFIGURATION 

@@ -20,13 +20,6 @@ void setupServoHaptics(){
   thumbServo.attach(PIN_THUMB_MOTOR);
 }
 
-//static scaling, maps to entire range of servo
-void scaleLimits(int* hapticLimits, float* scaledLimits){
-  for (int i = 0; i < 5; i++){
-    scaledLimits[i] = 180.0f - hapticLimits[i] / 1000.0f * 180.0f;
-  }
-}
-
 //dynamic scaling, maps to the limits calibrated from your finger
 void dynScaleLimits(int* hapticLimits, float* scaledLimits){
   //will be refactored to take min and max as an argument
@@ -38,6 +31,13 @@ void dynScaleLimits(int* hapticLimits, float* scaledLimits){
    */
   for (int i = 0; i < sizeof(hapticLimits); i++){
     scaledLimits[i] = hapticLimits[i] / 1000.0f * 180.0f;
+  }
+}
+
+//static scaling, maps to entire range of servo
+void scaleLimits(int* hapticLimits, float* scaledLimits){
+  for (int i = 0; i < 5; i++){
+    scaledLimits[i] = 180.0f - hapticLimits[i] / 1000.0f * 180.0f;
   }
 }
 
