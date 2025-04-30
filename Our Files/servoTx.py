@@ -16,11 +16,10 @@ E = Index finger
 
 
 The mapping is not correct, not sure why yet.
+
+
+But regardless this serves as an example of how to send commands to the glove.
 """
-
-
-
-
 
 try:
     bt_serial = serial.Serial(BT_SERIAL_PORT, BAUD_RATE, timeout=1)
