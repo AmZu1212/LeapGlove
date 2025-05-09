@@ -1,5 +1,7 @@
 Print:
 
 9x String_Guide.stl
-4x Generic_Finger_Cap.stl
-1x Thumb_Finger_Cap.stl
+5x Finger_Cap.stl
+
+
+Re-size Finger_Cap.stl to fit each of your fingers. Play with the scale.

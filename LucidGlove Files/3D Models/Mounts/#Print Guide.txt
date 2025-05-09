@@ -1,6 +1,7 @@
 Print:
 
-5x Motor_Mount.STL
+5x Motor_Mount.stl
+1x ESP_Mount.stl
 
-1x Your_ESP_Mount.stl
-and use the Quest2_Controller_Holder.stl to make your esp32 mount.
+
+You can ignore the "Mount Source Files" folder.
