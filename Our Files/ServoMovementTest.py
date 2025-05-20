@@ -3,30 +3,27 @@ import time
 
 BT_SERIAL_PORT = "COM8"   # Replace with your actual port
 BAUD_RATE = 115200
-SEND_INTERVAL = 0.5         # Seconds between each phase, dont go below 1
+SEND_INTERVAL = 1         # Seconds between each phase, dont go below 1
 
 
 """
-currently the mapping is:
-A = thumb
-B = Pinky finger
-C = Ring finger
-D = Middle finger
-E = Index finger
+Corrected letter-to-finger mapping based on servo behavior:
+A = Pinky
+B = Thumb
+C = Index
+D = Middle
+E = Ring
 
-
-The mapping is not correct, not sure why yet. this is not an issue tho.
-
-
-But regardless this serves as an example of how to send commands to the glove.
+This serves as an example of how to send commands to the glove.
 """
+
 
 try:
     bt_serial = serial.Serial(BT_SERIAL_PORT, BAUD_RATE, timeout=1)
     print(f"✅ Connected to {BT_SERIAL_PORT}")
 
     fingers = ['A', 'B', 'C', 'D', 'E']  # Thumb → Pinky
-    brake_strength = 1000                # 60% brake
+    brake_strength = 600                # 60% brake
     rest = 'A0B0C0D0E0'                 # All fingers at rest
 
     while True:
