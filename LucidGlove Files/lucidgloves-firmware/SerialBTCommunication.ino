@@ -27,12 +27,22 @@ class BTSerialCommunication : public ICommunication {
     }
 
     bool readData(char* input){
-      /*byte size = m_SerialBT.readBytesUntil('\n', input, 100);
-      input[size] = NULL;*/
-      String message = m_SerialBT.readStringUntil('\n');
-      strcpy(input, message.c_str());
-      return input != NULL && strlen(input) > 0;
+      static String temp = "";
+
+      while (m_SerialBT.available()) {
+        char c = m_SerialBT.read();
+        if (c == '\n') {
+          temp.toCharArray(input, temp.length() + 1);
+          temp = "";
+          return true;
+        } else {
+          temp += c;
+        }
+      }
+
+      return false;  // No full message yet
     }
+
 
     bool available(){
       return m_SerialBT.available() > 0;

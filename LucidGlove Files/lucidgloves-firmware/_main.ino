@@ -66,20 +66,32 @@ void loop() {
     bool menuButton = getButton(PIN_MENU_BTN) != INVERT_MENU;
 
     comm->output(encode(fingerPos, getJoyX(), getJoyY(), joyButton, triggerButton, aButton, bButton, grabButton, pinchButton, calibButton, menuButton));
-
-#if USING_FORCE_FEEDBACK
-    char received[30];
+    char received[50];
     if (comm->available()) {
       if (comm->readData(received)) {
-        int hapticLimits[5];
-        //This check is a temporary hack to fix an issue with haptics on v0.5 of the driver, will make it more snobby code later
-        if (String(received).length() >= 10) {
-          decodeData(received, hapticLimits);
-          writeServoHaptics(hapticLimits);
-        }
+      Serial.print("Received: ");
+      Serial.println(received);
+      Serial.flush();
+
+      int hapticLimits[5];
+
+      Serial.println("→ Calling decodeData()");
+      decodeData(received, hapticLimits);
+      Serial.println("✓ decodeData() done");
+      Serial.flush();
+
+      Serial.print("→ Writing haptics: ");
+      for (int i = 0; i < 5; i++) {
+        Serial.print(hapticLimits[i]);
+        Serial.print(" ");
       }
+      Serial.println();
+      Serial.println("→ Calling writeServoHaptics()");
+      writeServoHaptics(hapticLimits);
+      Serial.println("✓ writeServoHaptics() done");
+      Serial.flush();
     }
-#endif
+  }
     delay(LOOP_TIME);
   }
 }
