@@ -6,11 +6,10 @@ import numpy as np
 
 ESP32_PORT = "COM8"
 BAUD_RATE = 115200
-SEND_INTERVAL = 0.012  # ~83Hz
+SEND_INTERVAL = 0.012  # ~83Hz for Allegro
+SERVO_UPDATE_INTERVAL = 2.0  # formerly used for brake command
 
 ENABLE_LEAPHAND = False
-
-SERVO_TESTING = False
 
 if ENABLE_LEAPHAND:
     from LeapHandAPI import LeapNode as BaseLeapNode
@@ -21,32 +20,57 @@ if ENABLE_LEAPHAND:
         def __init__(self):
             super().__init__()  # COM5 fallback
 
-# Allegro-style mapping: 0.0 (open) → ~4.0 (closed)
 def glove_to_allegro(glove_data):
     pose = np.zeros(16)
-
     finger_map = {
         "Index (P)": [1, 2, 3],
         "Middle (C)": [5, 6, 7],
         "Ring (D)": [9, 10, 11],
         "Thumb (A)": [13, 14, 15]
     }
-
     for finger, joints in finger_map.items():
         bend = np.clip(glove_data[finger] / 100.0, 0.0, 1.0)
-        # Original
-        # pose[joints[0]] = bend * 1.6  # MCP
-        # pose[joints[1]] = bend * 1.4  # PIP
-        # pose[joints[2]] = bend * 1.0  # DIP
-
-        # Original 2 (tighter grip)
-        pose[joints[0]] = bend * 1.8  # MCP
-        pose[joints[1]] = bend * 1.4  # PIP
-        pose[joints[2]] = bend * 1.4  # DIP
-
+        pose[joints[0]] = bend * 1.8
+        pose[joints[1]] = bend * 1.4
+        pose[joints[2]] = bend * 1.4
     return pose
 
-# Calibration globals
+def get_finger_currents(leap_node, idle_current=0.05, contact_threshold=1.3):
+    try:
+        raw_vals = leap_node.read_cur()
+        current_vals = [val * 0.00269 for val in raw_vals]
+        # Fix thumb current if stuck near zero
+        if current_vals[0] < 0.005:
+            current_vals[0] = abs(current_vals[4])  # Use Ring's value if Thumb too small  # Convert raw units to Amps
+        print(f"🔧 raw read_cur(): {raw_vals}")
+        print(f"📏 type: {type(current_vals)}, length: {len(current_vals)}")
+    except Exception as e:
+        print(f"❌ Failed to read currents: {e}")
+        return {
+            "Thumb (A)": 0,
+            "Index (P)": 0,
+            "Middle (C)": 0,
+            "Ring (D)": 0,
+            "Pinky (E)": 0,
+        }
+
+    def scale(val):
+        excess = max(0.0, abs(val) - idle_current)
+        range_current = contact_threshold - idle_current
+        return min(int((excess / range_current) * 1000), 1000)
+
+    print("🔎 Raw Currents:")
+    print(f"  Thumb={current_vals[0]:.2f} A, Index={current_vals[1]:.2f} A, Middle={current_vals[2]:.2f} A, Ring={current_vals[3]:.2f} A")
+
+    currents = {
+        "Thumb (A)": scale(current_vals[0]),
+        "Index (P)": scale(current_vals[1]),
+        "Middle (C)": scale(current_vals[2]),
+        "Ring (D)": scale(current_vals[3]),
+    }
+    currents["Pinky (E)"] = currents["Ring (D)"]
+    return currents
+
 calibration_ranges = {
     "Thumb (A)": [float('inf'), float('-inf')],
     "Index (P)": [float('inf'), float('-inf')],
@@ -67,7 +91,7 @@ def calibrate(serial_conn, duration=5):
             if data:
                 for key in calibration_ranges:
                     value = data[key]
-                    if value < 10000:  # sanity
+                    if value < 10000:
                         calibration_ranges[key][0] = min(calibration_ranges[key][0], value)
                         calibration_ranges[key][1] = max(calibration_ranges[key][1], value)
     calibrated = True
@@ -79,12 +103,20 @@ def parse_raw_data(raw_data):
     pattern = r"A(\d+)B(\d+)C(\d+)D(\d+)E(\d+)F(\d+)G(\d+)P(\d+)(.*)"
     match = re.match(pattern, raw_data)
     if match:
-        return {
+        raw = {
             "Thumb (A)": int(match.group(1)),
             "Index (P)": int(match.group(8)),
             "Middle (C)": int(match.group(3)),
             "Ring (D)": int(match.group(4)),
             "Pinky (E)": int(match.group(5)),
+        }
+        # remap from left-handed glove to right-handed layout
+        return {
+            "Thumb (A)": raw["Pinky (E)"],
+            "Index (P)": raw["Ring (D)"],
+            "Middle (C)": raw["Middle (C)"],
+            "Ring (D)": raw["Index (P)"],
+            "Pinky (E)": raw["Thumb (A)"],
         }
     return None
 
@@ -117,7 +149,15 @@ try:
         leap_node = LeapNode()
         print("🤖 LEAP Hand initialized")
 
+        print("🔍 Testing leap_node.read_cur()...")
+        try:
+            current_vals = leap_node.read_cur()
+            print(f"✅ read_cur() success: {current_vals}")
+        except Exception as e:
+            print(f"❌ read_cur() failed: {e}")
+
     last_send_time = time.time()
+    last_servo_update_time = time.time()
     latest_glove_data = None
 
     while True:
@@ -130,11 +170,16 @@ try:
             latest_glove_data = parse_and_print_data(raw_data)
 
         now = time.time()
-        if ENABLE_LEAPHAND and calibrated and latest_glove_data and (now - last_send_time) >= SEND_INTERVAL:
-            pose = glove_to_allegro(latest_glove_data)
-            #print(f"\n🎯 Allegro pose: {np.round(pose, 2)}")
-            leap_node.set_allegro(pose)
-            last_send_time = now
+        if ENABLE_LEAPHAND and calibrated and latest_glove_data:
+            if (now - last_send_time) >= SEND_INTERVAL:
+                pose = glove_to_allegro(latest_glove_data)
+                leap_node.set_allegro(pose)
+                last_send_time = now
+
+            if (now - last_servo_update_time) >= SERVO_UPDATE_INTERVAL:
+                brake_values = get_finger_currents(leap_node)
+                print(f"\n🔧 LOAD: Thumb={brake_values['Thumb (A)']}  Index={brake_values['Index (P)']}  Middle={brake_values['Middle (C)']}  Ring={brake_values['Ring (D)']}  Pinky={brake_values['Pinky (E)']}")
+                last_servo_update_time = now
 
 except serial.SerialException as e:
     print(f"Serial Error: {e}")
