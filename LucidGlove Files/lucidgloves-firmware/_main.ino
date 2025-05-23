@@ -66,32 +66,20 @@ void loop() {
     bool menuButton = getButton(PIN_MENU_BTN) != INVERT_MENU;
 
     comm->output(encode(fingerPos, getJoyX(), getJoyY(), joyButton, triggerButton, aButton, bButton, grabButton, pinchButton, calibButton, menuButton));
+    #if USING_FORCE_FEEDBACK
+    static unsigned long lastHapticTime = 0;
+    const unsigned long hapticInterval = 15;  // ~66 Hz
+
     char received[50];
-    if (comm->available()) {
+    if (comm->available() && millis() - lastHapticTime > hapticInterval) {
       if (comm->readData(received)) {
-      Serial.print("Received: ");
-      Serial.println(received);
-      Serial.flush();
-
-      int hapticLimits[5];
-
-      Serial.println("→ Calling decodeData()");
-      decodeData(received, hapticLimits);
-      Serial.println("✓ decodeData() done");
-      Serial.flush();
-
-      Serial.print("→ Writing haptics: ");
-      for (int i = 0; i < 5; i++) {
-        Serial.print(hapticLimits[i]);
-        Serial.print(" ");
+        int hapticLimits[5];
+        decodeData(received, hapticLimits);
+        writeServoHaptics(hapticLimits);
+        lastHapticTime = millis();
       }
-      Serial.println();
-      Serial.println("→ Calling writeServoHaptics()");
-      writeServoHaptics(hapticLimits);
-      Serial.println("✓ writeServoHaptics() done");
-      Serial.flush();
     }
-  }
+#endif
     delay(LOOP_TIME);
   }
 }

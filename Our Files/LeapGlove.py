@@ -11,6 +11,19 @@ SERVO_UPDATE_INTERVAL = 2.0  # formerly used for brake command
 
 ENABLE_LEAPHAND = False
 
+# --- HAPTICS: Servo Presets
+servo_zero_command = "A0B0C0D0E0\n"
+
+haptic_presets = {
+    "ball_hold": {
+        "Thumb (A)": 700,
+        "Index (P)": 700,
+        "Middle (C)": 700,
+        "Ring (D)": 700,
+        "Pinky (E)": 700
+    }
+}
+
 if ENABLE_LEAPHAND:
     from LeapHandAPI import LeapNode as BaseLeapNode
     from leap_hand_utils.dynamixel_client import *
@@ -39,20 +52,13 @@ def get_finger_currents(leap_node, idle_current=0.05, contact_threshold=1.3):
     try:
         raw_vals = leap_node.read_cur()
         current_vals = [val * 0.00269 for val in raw_vals]
-        # Fix thumb current if stuck near zero
         if current_vals[0] < 0.005:
-            current_vals[0] = abs(current_vals[4])  # Use Ring's value if Thumb too small  # Convert raw units to Amps
+            current_vals[0] = abs(current_vals[4])
         print(f"🔧 raw read_cur(): {raw_vals}")
         print(f"📏 type: {type(current_vals)}, length: {len(current_vals)}")
     except Exception as e:
         print(f"❌ Failed to read currents: {e}")
-        return {
-            "Thumb (A)": 0,
-            "Index (P)": 0,
-            "Middle (C)": 0,
-            "Ring (D)": 0,
-            "Pinky (E)": 0,
-        }
+        return {k: 0 for k in ["Thumb (A)", "Index (P)", "Middle (C)", "Ring (D)", "Pinky (E)"]}
 
     def scale(val):
         excess = max(0.0, abs(val) - idle_current)
@@ -67,8 +73,8 @@ def get_finger_currents(leap_node, idle_current=0.05, contact_threshold=1.3):
         "Index (P)": scale(current_vals[1]),
         "Middle (C)": scale(current_vals[2]),
         "Ring (D)": scale(current_vals[3]),
+        "Pinky (E)": scale(current_vals[3])
     }
-    currents["Pinky (E)"] = currents["Ring (D)"]
     return currents
 
 calibration_ranges = {
@@ -110,7 +116,6 @@ def parse_raw_data(raw_data):
             "Ring (D)": int(match.group(4)),
             "Pinky (E)": int(match.group(5)),
         }
-        # remap from left-handed glove to right-handed layout
         return {
             "Thumb (A)": raw["Pinky (E)"],
             "Index (P)": raw["Ring (D)"],
@@ -163,6 +168,26 @@ try:
     while True:
         if keyboard.is_pressed('shift+c'):
             calibrate(esp32_serial)
+            time.sleep(0.5)
+
+        if keyboard.is_pressed('shift+z'):
+            print("\n🔧 Zeroing all servos...")
+            esp32_serial.write(servo_zero_command.encode())
+            time.sleep(0.5)
+
+        if keyboard.is_pressed('b'):
+            print("\n🖐️ Activating ball-hold preset...")
+            preset = haptic_presets["ball_hold"]
+            # Apply correct letter-to-finger mapping
+            command = (
+                f"A{preset['Pinky (E)']}"
+                f"B{preset['Thumb (A)']}"
+                f"C{preset['Index (P)']}"
+                f"D{preset['Middle (C)']}"
+                f"E{preset['Ring (D)']}\n"
+            )
+            esp32_serial.write(command.encode())
+            print(f"→ Sent: {command.strip()}")
             time.sleep(0.5)
 
         if esp32_serial.in_waiting > 0:

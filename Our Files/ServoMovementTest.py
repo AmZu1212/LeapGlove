@@ -13,7 +13,7 @@ import random
 
 BT_SERIAL_PORT = "COM8"
 BAUD_RATE = 115200
-SEND_INTERVAL = 0.1  # 100 ms
+SEND_INTERVAL = 1  # 100 ms
 
 fingers = ['A', 'B', 'C', 'D', 'E']  # A = Pinky, B = Thumb, etc.
 
