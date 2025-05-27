@@ -5,8 +5,6 @@ The **LeapGlove Project** aims to repurpose the [LucidGloves](https://github.com
 
 This initiative focuses on creating an affordable, human-computer interaction interface for the LeapHand. 
 
-> **Note**: This project is currently in progress. Comprehensive documentation will be provided at a later date.
-
 ---
 
 ## Objectives
@@ -29,9 +27,45 @@ The LeapGlove Project builds on:
 
 ---
 
-## Media and Documentation
-### Documentation
-- **Coming Soon**: Detailed documentation on how to build and set up the LeapGlove.
+## How to Build the LeapGlove
+
+### 3D Printing & Parts
+
+- **Find the STL files:**  
+  Navigate to the `lucidglove/3d models` folder in this repository to locate all the required printable parts.  
+  > **Note:** Some models differ from the original LucidGlove designs, featuring improvements for print quality and structural strength.
+
+- **Check the README in each subfolder:**  
+  Each subfolder contains a `README` file specifying which parts to print and how many of each are needed.
+
+- **Printing Tips:**  
+  - Use PLA or PETG for strength and reliability.
+  - Recommended infill: at least 20% for durability.
+  - Some parts may require supports (snug supports are recommended for all the sliding parts. For the rest use snug supports).
+  - Test-fit parts before final assembly.
+
+- **Assembly Notes:**  
+  - The majority of the glove’s assembly follows the original LucidGlove design.  
+  - The haptic modules are designed to be hot-glued into place; use hot glue for a secure fit if needed.
+  - Wiring should follow the LucidGlove repository guidelines for sensor and ESP32 placement.
+
+- **Differences from Original:**  
+  - Improved models for easier printing and stronger construction.
+  - Some tweaks for better fitment of electronics and servos.
+    
+
+### Final Steps
+
+- **Firmware:**  
+  Flash our version of the LucidGlove firmware to your ESP32 as described in the [LucidGlove instructions](https://github.com/LucidVR/lucidgloves).
+
+- **LeapHand Setup:**  
+  Build and connect the LeapHand to your PC following the [LeapHand documentation](https://v1.leaphand.com/).
+
+- **Software:**  
+  Once hardware is ready and connected (if used bluetooth dont forget to pair to the LeapGlove), run the integration script for the `Our Files` Folder:
+  ```bash
+  python leapglove.py
 
 ### Demonstration Videos
 - **Glove Demo**:
@@ -42,11 +76,13 @@ https://github.com/user-attachments/assets/84f64e34-5cb0-47a1-a268-5b9e06becb94
 
   https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
 
+- ** LeapGlove Final Demo**:
+
+  [paste link here later]
+
 ---
 
 
 ## Contact
 For any questions, suggestions, or collaboration opportunities, feel free to reach out:
 - **Email**: zuabiamir@gmail.com
-
-We look forward to your feedback!
