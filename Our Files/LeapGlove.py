@@ -9,11 +9,11 @@ BAUD_RATE = 115200
 SEND_INTERVAL = 0.012  # ~83Hz for Allegro
 SERVO_UPDATE_INTERVAL = 2.0  # formerly used for brake command
 
-ENABLE_LEAPHAND = False
+ENABLE_LEAPHAND = True
 
 # --- HAPTICS: Servo Presets
 servo_zero_command = "A0B0C0D0E0\n"
-
+# mapping is 0-1000, so 700 is 70% 
 haptic_presets = {
     "ball_hold": {
         "Thumb (A)": 700,
@@ -189,6 +189,16 @@ try:
             esp32_serial.write(command.encode())
             print(f"→ Sent: {command.strip()}")
             time.sleep(0.5)
+        for i in range(10):
+            if keyboard.is_pressed(str(i)):
+                strength = i * 100  # 0–900
+                print(f"\n🖐️ Activating haptic preset {i} ({strength} brake)...")
+                command = f"A{strength}B{strength}C{strength}D{strength}E{strength}\n"
+                esp32_serial.write(command.encode())
+                print(f"→ Sent: {command.strip()}")
+                time.sleep(0.5)
+                break
+
 
         if esp32_serial.in_waiting > 0:
             raw_data = esp32_serial.readline().decode('utf-8').strip()
