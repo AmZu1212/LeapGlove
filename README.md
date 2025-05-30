@@ -1,3 +1,4 @@
+![Top Banner](https://github.com/user-attachments/assets/7fda2d74-d90f-4a15-a4f0-2e73835bf580)
 # LeapGlove Project
 
 ## Overview
@@ -86,3 +87,5 @@ https://github.com/user-attachments/assets/84f64e34-5cb0-47a1-a268-5b9e06becb94
 ## Contact
 For any questions, suggestions, or collaboration opportunities, feel free to reach out:
 - **Email**: zuabiamir@gmail.com
+
+![Bottom Banner](https://github.com/user-attachments/assets/37fdd0cc-1e97-464d-82f6-6b3a6e116ac4)
