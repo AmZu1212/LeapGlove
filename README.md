@@ -128,8 +128,10 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
 6. **Connect the electronics and pair the LeapGlove with Windows via Bluetooth:**
     - Open your PC’s Bluetooth panel and pair with the LeapGlove.
-    - Check in device manager which COM# is your esp bluetooth connection
+    - Check in device manager which COM# is your esp bluetooth connection:
+
       ![image](https://github.com/user-attachments/assets/9f4184cc-f68d-4b25-a4c3-11a6e81f580e)
+      
     - Update the esp port in the script:
       ![image](https://github.com/user-attachments/assets/d08bcf45-913b-4b04-b0b3-2f612205aaf6)
 
@@ -150,8 +152,13 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
     - Ensure there is tension even when the hand is fully open.
 5. Close your hand.
 6. For each motor, one by one, put the tail on **after** (clockwise) the screw position.  
-   This sets the motor’s “zero” point. please refer to the image below:
-   ![tail after screw](#) <!-- IMAGE PLACEHOLDER -->
+   This sets the motor’s “zero” point. Please refer to the image and gif below:
+   <img src="https://github.com/user-attachments/assets/b3c7d500-4104-4469-a516-5af31faa5246" alt="Motor Tail Placement" width="300"/>
+   
+   GIF of how it should look like:
+   <img src="https://github.com/user-attachments/assets/e2f44b70-f850-4cbf-b12a-898178204774" alt="Motor Tail Placement GIF" width="300"/>
+
+
 
 ### Operation Safety
 
