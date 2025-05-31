@@ -105,7 +105,9 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 ## Step 5: Setting Up the Code
 
 1. **Download CH340 USB drivers:**  
-   [Insert CH340 driver link here]
+   - [CH340 driver link here](https://sparks.gogo.co.nz/ch340.html)
+   - please not that maybe your esp wil have a cp210 driver instead, just install that one.
+   - The driver type depends on the small chip near the usb port on the esp board.
 
 2. **Install drivers** and connect your ESP32 board via USB.
 
@@ -128,10 +130,9 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 6. **Connect the electronics and pair the LeapGlove with Windows via Bluetooth:**
     - Open your PC’s Bluetooth panel and pair with the LeapGlove.
     - Check in device manager which COM# is your esp bluetooth connection
+      ![image](https://github.com/user-attachments/assets/9f4184cc-f68d-4b25-a4c3-11a6e81f580e)
     - Update the esp port in the script:
       ![image](https://github.com/user-attachments/assets/d08bcf45-913b-4b04-b0b3-2f612205aaf6)
-
-
 
 ## Step 6: How to Wear and Use the Glove Safely
 
