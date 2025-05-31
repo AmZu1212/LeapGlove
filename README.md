@@ -127,6 +127,10 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
 6. **Connect the electronics and pair the LeapGlove with Windows via Bluetooth:**
     - Open your PC’s Bluetooth panel and pair with the LeapGlove.
+    - Check in device manager which COM# is your esp bluetooth connection
+    - Update the esp port in the script:
+      ![image](https://github.com/user-attachments/assets/d08bcf45-913b-4b04-b0b3-2f612205aaf6)
+
 
 
 ## Step 6: How to Wear and Use the Glove Safely
