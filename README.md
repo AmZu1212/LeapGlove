@@ -4,9 +4,9 @@
   <img src="https://github.com/user-attachments/assets/d99663a5-5f14-471e-bad9-8e396a9287bb" alt="LeapGlove" width="600"/>
 </div>
 
-## Contact Me
+## Contact Us
 For any questions, suggestions, or collaboration opportunities, feel free to reach out:
-- **Email**: zuabiamir@gmail.com
+- **Emails**: zuabiamir@gmail.com , liz.dushkin@gmail.com
   
 ## Overview
 The **LeapGlove Project** aims to repurpose the [LucidGloves](https://github.com/LucidVR/lucidgloves) to control the [LeapHand](https://v1.leaphand.com/) while retaining the haptic feedback capabilities of the glove. 
