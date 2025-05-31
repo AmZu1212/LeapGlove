@@ -5,7 +5,7 @@
 </div>
 
 ## Contact Us
-For any questions, suggestions, or collaboration opportunities, feel free to reach out:
+For any questions, feel free to reach out:
 - **Emails**: zuabiamir@gmail.com , liz.dushkin@gmail.com
   
 ## Overview
