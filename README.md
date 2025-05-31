@@ -176,7 +176,7 @@ https://github.com/user-attachments/assets/84f64e34-5cb0-47a1-a268-5b9e06becb94
 
 - **Leap Hand Demo (Courtesy of LeapHand.com)**:
 
-  https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
+https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
 
 - ** LeapGlove Final Demo**:
 
