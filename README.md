@@ -163,9 +163,9 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
 - **Software:**  
   Once hardware is ready and connected (if used bluetooth dont forget to pair to the LeapGlove), run the integration script for the `Our Files` Folder:
-  ```bash
+  ```
   python leapglove.py
-
+  ```
 
 
 
