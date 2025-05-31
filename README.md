@@ -110,11 +110,13 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
 3. **Open Windows Device Manager:**
     - Right click the Windows icon  
-      ![Windows icon](#) <!-- IMAGE PLACEHOLDER -->
+      ![image](https://github.com/user-attachments/assets/6019bdc2-e071-4d57-8937-a9393a27cb97)
     - Choose Device Manager  
-      ![Device Manager](#) <!-- IMAGE PLACEHOLDER -->
-    - Find your “CH340” COM device under Ports (COM & LPT)  
-      ![Device Manager Ports section](#) <!-- IMAGE PLACEHOLDER -->
+      ![image](https://github.com/user-attachments/assets/1de04038-150e-40af-8ba3-ef86dca4d41b)
+
+    - Find your “CH340” COM device under Ports (COM & LPT). (For us it is COM3, but for you the number may be different) 
+      ![image](https://github.com/user-attachments/assets/55b58ef7-0c26-415d-a2d3-3532c8f96fde)
+
 
 4. **Download and install Arduino IDE.**  
    Follow Lucas’s video for preparation and board profile setup (use the updated firmware):  
