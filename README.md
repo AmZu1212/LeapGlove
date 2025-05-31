@@ -36,8 +36,6 @@ As a leap hand controller, the gloves supports general finger motion, except fin
 
 ## LeapGlove Assembly & Setup Guide
 
-### 3D Printing & Parts
-
 ## Step 1: Complete Hardware List
 The hardware needed is listed here, or alternatively you can check lucas'es hadrware list. 
 Just be sure to use an `esp32-wroom-32` and not an arduino nano. [Lucas's original parts list](https://github.com/LucidVR/lucidgloves/wiki/Prototype-4-Parts-List)
