@@ -1,5 +1,8 @@
 ![Top Banner](https://github.com/user-attachments/assets/7fda2d74-d90f-4a15-a4f0-2e73835bf580)
-# LeapGlove Project
+<div align="center">
+  <h1>The LeapGlove Project</h1>
+  <img src="https://github.com/user-attachments/assets/d99663a5-5f14-471e-bad9-8e396a9287bb" alt="LeapGlove" width="600"/>
+</div>
 
 ## Contact Me
 For any questions, suggestions, or collaboration opportunities, feel free to reach out:
