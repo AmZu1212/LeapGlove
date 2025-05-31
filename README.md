@@ -97,11 +97,11 @@ Refer to Lucas’s video for a step-by-step assembly:
 There is flexibility in pin choice if you edit the firmware config.  
 This guide assumes you are using the provided firmware as-is (we recommend to not change anything and run as-is).
 
-- ![ESP32 connected to glove](#) <!-- IMAGE PLACEHOLDER -->
-- ![ESP32 pinout, highlight used pins](#) <!-- IMAGE PLACEHOLDER -->
-
-
-
+- The wires should be connected like so:
+  ![image](https://github.com/user-attachments/assets/75371a49-d9d7-43d0-9198-98732fd23504)
+- The finished product should look like this:
+  ![image](https://github.com/user-attachments/assets/80aee6a9-6791-43b3-a583-a5de7836cbba)
+  
 ## Step 5: Setting Up the Code
 
 1. **Download CH340 USB drivers:**  
@@ -119,7 +119,6 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
     - Find your “CH340” COM device under Ports (COM & LPT). (For us it is COM3, but for you the number may be different) 
       ![image](https://github.com/user-attachments/assets/55b58ef7-0c26-415d-a2d3-3532c8f96fde)
-
 
 4. **Download and install Arduino IDE.**  
    Follow Lucas’s video for preparation and board profile setup (use the updated firmware):  
@@ -163,7 +162,6 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 - **If you have haptics issues (servos don’t stop hand movement):**  
   - Glove material is too flexible, or servos are misaligned. Re-align as above.
 
-
 ### Final Steps
 
 - **LeapHand Setup:**  
@@ -174,8 +172,6 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
   ```
   python leapglove.py
   ```
-
-
 
 ### Demonstration Videos
 - **Glove Demo**:
@@ -191,7 +187,5 @@ https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
   [paste link here later]
 
 ---
-
-
 
 ![Bottom Banner](https://github.com/user-attachments/assets/37fdd0cc-1e97-464d-82f6-6b3a6e116ac4)
