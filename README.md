@@ -130,8 +130,8 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 
 - **Tension will differ per user.**
 - **You must:**  
-  1. Re-tighten the ropes  
-  2. Adjust the servo motor’s tail
+  - Re-tighten the ropes  
+  - Adjust the servo motor’s tail
 
 ### Rope and Servo Adjustment Procedure
 
