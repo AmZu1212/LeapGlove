@@ -31,8 +31,9 @@ please consider leaving a star on both of the repos above, as without their prev
 ---
 
 ## Project Status
-This project is finished. Unfortunately we fell abit short of our expected implementation due to the physical design of the mechanism, and due to the latency the servo motors have.
-As a leap hand controller, the gloves supports general finger motion, except fine grain movement and splay movement. And for the hapttiic, it was unfortunaetely impossible to implement a realtime transmition of haptics, so we created haptic presets from 0% to 90%, so it can be demo'ed if anyone wishes to see how it may feel. 
+- This project is finished. We fell abit short of our expected implementation due to the physical design of the mechanism, and due to the latency the servo motors have.
+- As a leap hand controller, the gloves supports general finger motion, except fine grain movement and splay movement.
+- And for the haptics, it was unfortunately impossible to implement a realtime transmission of haptics, so we created haptic presets from 0% to 90%, so it can be demo'ed if anyone wishes to see how it may feel. 
 
 ---
 
