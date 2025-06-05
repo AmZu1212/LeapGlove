@@ -34,6 +34,23 @@ As a leap hand controller, the gloves supports general finger motion, except fin
 
 ---
 
+### Demonstration Videos
+- **Glove Demo**:
+
+https://github.com/user-attachments/assets/84f64e34-5cb0-47a1-a268-5b9e06becb94
+
+- **Leap Hand Demo (Courtesy of LeapHand.com)**:
+
+https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
+
+- ** LeapGlove Final Demo**:
+
+  [paste link here later]
+
+---
+
+---
+
 ## LeapGlove Assembly & Setup Guide
 
 ## Step 1: Complete Hardware List
@@ -179,20 +196,5 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
   ```
   python leapglove.py
   ```
-
-### Demonstration Videos
-- **Glove Demo**:
-
-https://github.com/user-attachments/assets/84f64e34-5cb0-47a1-a268-5b9e06becb94
-
-- **Leap Hand Demo (Courtesy of LeapHand.com)**:
-
-https://github.com/user-attachments/assets/7a54c01e-ebf4-48aa-9cdf-c213115a098e
-
-- ** LeapGlove Final Demo**:
-
-  [paste link here later]
-
----
 
 ![Bottom Banner](https://github.com/user-attachments/assets/37fdd0cc-1e97-464d-82f6-6b3a6e116ac4)
