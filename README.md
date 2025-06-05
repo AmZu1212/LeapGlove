@@ -20,21 +20,15 @@ The LeapGlove Project builds on:
 
 please consider leaving a star on both of the repos above, as without their previous work, this would not be possible.
 
----
-
 ## Project Objectives
 - Repurpose the LucidGloves to function as controllers for the LeapHand.
 - Retain the haptic feedback features of the LucidGloves.
 - Provide an affordable and accessible solution for LeapHand control.
 
----
-
 ## Project Status
 - This project is finished. We fell abit short of our expected implementation due to the physical design of the mechanism, and due to the latency the servo motors have.
 - As a leap hand controller, the gloves supports general finger motion, except fine grain movement and splay movement.
 - And for the haptics, it was unfortunately impossible to implement a realtime transmission of haptics, so we created haptic presets from 0% to 90%, so it can be demo'ed if anyone wishes to see how it may feel. 
-
----
 
 ## Demonstration Videos
 - **Glove Demo**:
