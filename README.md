@@ -7,6 +7,8 @@
 ## Contact Us
 For any questions, feel free to reach out:
 - **Emails**: zuabiamir@gmail.com , liz.dushkin@gmail.com
+> **Note**: Also, Check this githubs wiki page for a step by step guide for making it, or alternatively scroll down in this page.
+
   
 ## Overview
 The **LeapGlove Project** aims to repurpose the [LucidGloves](https://github.com/LucidVR/lucidgloves) to control the [LeapHand](https://v1.leaphand.com/) while retaining the haptic feedback capabilities of the glove. 
