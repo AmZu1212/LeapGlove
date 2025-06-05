@@ -170,11 +170,13 @@ This guide assumes you are using the provided firmware as-is (we recommend to no
 5. Close your hand.
 6. For each motor, one by one, put the tail on **after** (clockwise) the screw position.  
    This sets the motor’s “zero” point. Please refer to the image and gif below:
+   
    <img src="https://github.com/user-attachments/assets/b3c7d500-4104-4469-a516-5af31faa5246" alt="Motor Tail Placement" width="300"/>
+
    
    GIF of how it should look like:
+   
    <img src="https://github.com/user-attachments/assets/e2f44b70-f850-4cbf-b12a-898178204774" alt="Motor Tail Placement GIF" width="300"/>
-
 
 
 ### Operation Safety
