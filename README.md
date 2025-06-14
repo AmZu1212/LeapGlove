@@ -2,7 +2,6 @@
 <div align="center">
   <h1>The LeapGlove Project</h1>
   <img src="https://github.com/user-attachments/assets/d99663a5-5f14-471e-bad9-8e396a9287bb" alt="LeapGlove" width="600"/>
-  [![Watch the video](https://img.youtube.com/vi/kGnLS8vwwYY/0.jpg)](https://www.youtube.com/watch?v=kGnLS8vwwYY)
 </div>
 
 ## Contact Us
@@ -13,7 +12,9 @@ For any questions, feel free to reach out:
 ## Overview
 The **LeapGlove Project** aims to repurpose the [LucidGloves](https://github.com/LucidVR/lucidgloves) to control the [LeapHand](https://v1.leaphand.com/) while retaining the haptic feedback capabilities of the glove. 
 
-This initiative focuses on creating an affordable, human-computer interaction interface for the LeapHand. 
+This initiative focuses on creating an affordable, human-computer interaction interface for the LeapHand.
+
+[![Watch the video](https://img.youtube.com/vi/kGnLS8vwwYY/0.jpg)](https://www.youtube.com/watch?v=kGnLS8vwwYY)
 
 The LeapGlove Project builds on:
 - **LucidGloves Prototype 4**: [GitHub Repository](https://github.com/LucidVR/lucidgloves)
