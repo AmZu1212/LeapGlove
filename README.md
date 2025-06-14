@@ -14,6 +14,8 @@ The **LeapGlove Project** aims to repurpose the [LucidGloves](https://github.com
 
 This initiative focuses on creating an affordable, human-computer interaction interface for the LeapHand.
 
+Watch the showcase here:
+
 [![Watch the video](https://img.youtube.com/vi/kGnLS8vwwYY/0.jpg)](https://www.youtube.com/watch?v=kGnLS8vwwYY)
 
 The LeapGlove Project builds on:
