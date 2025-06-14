@@ -2,6 +2,7 @@
 <div align="center">
   <h1>The LeapGlove Project</h1>
   <img src="https://github.com/user-attachments/assets/d99663a5-5f14-471e-bad9-8e396a9287bb" alt="LeapGlove" width="600"/>
+  [![Watch the video](https://img.youtube.com/vi/kGnLS8vwwYY/0.jpg)](https://www.youtube.com/watch?v=kGnLS8vwwYY)
 </div>
 
 ## Contact Us
