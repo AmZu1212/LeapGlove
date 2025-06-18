@@ -16,7 +16,7 @@ This initiative focuses on creating an affordable, human-computer interaction in
 
 Watch the showcase here:
 
-[![Watch the video](https://img.youtube.com/vi/kGnLS8vwwYY/0.jpg)](https://www.youtube.com/watch?v=kGnLS8vwwYY)
+[![Watch the video](https://img.youtube.com/vi/LX1qnLxFVLc/0.jpg)](https://www.youtube.com/shorts/LX1qnLxFVLc)
 
 The LeapGlove Project builds on:
 - **LucidGloves Prototype 4**: [GitHub Repository](https://github.com/LucidVR/lucidgloves)
